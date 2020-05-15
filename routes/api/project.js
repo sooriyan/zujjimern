@@ -1,0 +1,79 @@
+const express = require('express');
+const Project = require('../../models/Project');
+const adminauth = require('../../middleware/adminauth');
+const router = express.Router();
+const { check, validationResult } = require('express-validator');
+//@route GET api/project
+//@desc Get users Projects
+//@access Private
+router.get('/', async (req, res) => {
+  try {
+    const projects = await Project.find().populate('admin', ['name', 'email']);
+    if (!projects) {
+      return res
+        .status(400)
+        .json({ msg: 'There are no projects created by the user' });
+    }
+    res.json(projects);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  }
+});
+//@route POST api/project
+//@desc Create project
+//@access Private
+router.post(
+  '/',
+  [
+    adminauth,
+    [
+      check('name', 'Enter a valid name for project').not().isEmpty(),
+      check('bedroom', 'Enter Number of bedrooms').not().isEmpty(),
+      check('sqft', 'Enter Square foot value').not().isEmpty(),
+      check('facing', 'Enter facing of the house').not().isEmpty(),
+      check('link', 'Enter The iframe URL for the video').not().isEmpty(),
+    ],
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const { name, bedroom, sqft, facing, link, location, newproj } = req.body;
+    const projectfields = {};
+    projectfields.user = req.user.id;
+    projectfields.name = name;
+    projectfields.bedroom = bedroom;
+    projectfields.sqft = sqft;
+    projectfields.facing = facing;
+    projectfields.link = link;
+    projectfields.location = location;
+    try {
+      let project = await Project.findOne({ name: name });
+      if (project) {
+        if (newproj) {
+          let error = {
+            msg: 'Entered Project already Exist',
+          };
+          return res.status(400).json({ errors: [error] });
+        }
+        //Update
+        project = await Project.findOneAndUpdate(
+          { name: name },
+          { $set: projectfields },
+          { new: true }
+        );
+        return res.json(project);
+      }
+      //Create
+      project = new Project(projectfields);
+      await project.save();
+      res.json(project);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+module.exports = router;

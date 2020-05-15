@@ -1,6 +1,8 @@
 const express = require('express');
-const nodemailer = require('nodemailer');
+const sendMail = require('../../config/mail');
+const config = require('config');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 const { check, validationResult } = require('express-validator');
 const User = require('../../models/User');
 const bcrypt = require('bcryptjs');
@@ -41,8 +43,25 @@ router.post(
       user.password = await bcrypt.hash(password, salt);
       await user.save();
       // Return json webtoken
-      res.send('User Registered');
-      // Send Email
+      const payload = {
+        user: {
+          id: user.id,
+        },
+      };
+      jwt.sign(
+        payload,
+        config.get('jwtsecret'),
+        { expiresIn: 360000 },
+        (err, token) => {
+          if (err) throw err;
+          sendMail(
+            user.email,
+            'Complete Registration',
+            `http://localhost:5000/emailverify/${token}`
+          );
+          res.send('Mail has been sent to the User Email');
+        }
+      );
     } catch (error) {
       console.error(error.message);
       res.status(500).send('Server Error');
