@@ -81,7 +81,7 @@ const MainNavbar = ({
       expand='lg'
       className='sticky-top'
     >
-      <Navbar.Brand href='#home'>
+      <Navbar.Brand href='/'>
         <b>Zujji</b>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls='basic-navbar-nav' />
