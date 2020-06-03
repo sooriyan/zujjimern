@@ -105,7 +105,7 @@ router.post(
             sendMail(
               email,
               'Resetting your password',
-              `<p>Please click on this <a href='http://localhost:3000/adminfpwd/${token}'>link</a> to reset your password</p>`
+              `<p>Please click on this <a href='https://guarded-caverns-78180.herokuapp.com/adminfpwd/${token}'>link</a> to reset your password</p>`
             );
             res.json({
               msg:
@@ -198,7 +198,7 @@ router.put('/getreq/:id', adminauth, async (req, res) => {
     sendMail(
       allreqs.user.email,
       `Regarding your Request for `,
-      `<p>Your Request has been completed.<a href='http://localhost:3000/login'>Log In</a> to view the result</p>`
+      `<p>Your Request has been completed.<a href='https://guarded-caverns-78180.herokuapp.com/login'>Log In</a> to view the result</p>`
     );
     return res.json(allreqs);
   } catch (error) {

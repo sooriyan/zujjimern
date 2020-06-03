@@ -61,7 +61,7 @@ router.post(
           sendMail(
             user.email,
             'Complete Registration',
-            `http://localhost:3000/emailverify/${token}`
+            `https://guarded-caverns-78180.herokuapp.com/emailverify/${token}`
           );
           res.send('Mail has been sent to the User Email');
         }
@@ -101,7 +101,7 @@ router.post(
             sendMail(
               email,
               'Resetting your password',
-              `<p>Please click on this <a href='http://localhost:3000/fpwd/${token}'>link</a> to reset your password</p>`
+              `<p>Please click on this <a href='https://guarded-caverns-78180.herokuapp.com/fpwd/${token}'>link</a> to reset your password</p>`
             );
             res.json({
               msg:
