@@ -10,7 +10,7 @@ router.post('/', async (req, res) => {
   const file = req.files.file;
   const id = req.body.id;
   const extension = file.name.split('.')[1];
-  file.mv(`./client/public/uploads/${id}.${extension}`, async (err) => {
+  file.mv(`./client/build/uploads/${id}.${extension}`, async (err) => {
     if (err) {
       console.error(err);
       return res.status(500).send(err);
@@ -42,7 +42,7 @@ router.post('/project', async (req, res) => {
   const file = req.files.file;
   const id = req.body.id;
   const extension = file.name.split('.')[1];
-  file.mv(`./client/public/projects/${id}.${extension}`, async (err) => {
+  file.mv(`./client/build/projects/${id}.${extension}`, async (err) => {
     if (err) {
       console.error(err);
       return res.status(500).send(err);
