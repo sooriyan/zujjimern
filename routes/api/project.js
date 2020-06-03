@@ -20,6 +20,26 @@ router.get('/', async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+//@route GET api/project/getproject
+//@desc Get particular Project
+//@access Private
+router.put('/getproject', adminauth, async (req, res) => {
+  try {
+    console.log(req.body.projid);
+    const project = await Project.findById({
+      _id: req.body.projid,
+    }).populate('admin', ['name', 'email']);
+    if (!project) {
+      return res
+        .status(400)
+        .json({ msg: 'There are no projects created by the user' });
+    }
+    res.json(project);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  }
+});
 //@route POST api/project
 //@desc Create project
 //@access Private
@@ -40,15 +60,14 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { name, bedroom, sqft, facing, link, location, newproj } = req.body;
+    const { name, bedroom, sqft, facing, link, newproj } = req.body;
     const projectfields = {};
-    projectfields.user = req.user.id;
     projectfields.name = name;
     projectfields.bedroom = bedroom;
     projectfields.sqft = sqft;
     projectfields.facing = facing;
     projectfields.link = link;
-    projectfields.location = location;
+    projectfields.admin = req.admin.id;
     try {
       let project = await Project.findOne({ name: name });
       if (project) {
@@ -69,6 +88,7 @@ router.post(
       //Create
       project = new Project(projectfields);
       await project.save();
+      console.log(project);
       res.json(project);
     } catch (error) {
       console.error(error.message);
@@ -76,4 +96,46 @@ router.post(
     }
   }
 );
+//get recent projects
+router.get('/recentprojects', async (req, res) => {
+  try {
+    const recentprojects = await Project.find().sort({ _id: -1 }).limit(4);
+    return res.json(recentprojects);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+router.post('/queryget', async (req, res) => {
+  try {
+    const { sqft, bedroom } = req.body;
+    const projects = await Project.find({
+      $or: [{ sqft }, { bedroom }],
+    });
+    return res.json(projects);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+router.get('/getdistinctsqft', async (req, res) => {
+  try {
+    const sqfts = await Project.find().distinct('sqft');
+    return res.json(sqfts);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+});
+router.get('/getdistinctbedrooms', async (req, res) => {
+  try {
+    const bedrooms = await Project.find().distinct('bedroom');
+    return res.json(bedrooms);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+});
 module.exports = router;

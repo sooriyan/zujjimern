@@ -8,6 +8,9 @@ const ProjectSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'admin',
   },
+  planDetails: {
+    type: String,
+  },
   bedroom: {
     type: Number,
   },
@@ -18,9 +21,6 @@ const ProjectSchema = new mongoose.Schema({
     type: String,
   },
   link: {
-    type: String,
-  },
-  location: {
     type: String,
   },
   date: {

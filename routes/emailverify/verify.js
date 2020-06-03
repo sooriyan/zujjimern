@@ -4,9 +4,9 @@ const router = express.Router();
 const config = require('config');
 const jwt = require('jsonwebtoken');
 //Email Verification
-router.get('/:token', async (req, res) => {
+router.put('/', async (req, res) => {
   try {
-    const token = req.params.token;
+    const token = req.body.token;
     const decoded = jwt.verify(token, config.get('jwtsecret'));
     const { id } = decoded.user;
     console.log(id);
@@ -18,14 +18,11 @@ router.get('/:token', async (req, res) => {
         if (err) throw err;
       }
     );
-    return res.redirect('/login');
+    return res.json({ success: 'success' });
   } catch (error) {
     console.error(error.message);
     return res.status(500).send('Server Error');
   }
 });
-//Forgot Password - User
-
-//Forgot Password - Admin
 
 module.exports = router;
