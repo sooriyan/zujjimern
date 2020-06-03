@@ -72,7 +72,7 @@ const CreateRequest = ({ history, addrequest }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     addrequest(rooms);
-    history.push('/dashboard');
+    history.push('/userreqmgmt');
   };
   return (
     <Container>
