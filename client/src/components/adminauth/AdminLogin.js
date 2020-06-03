@@ -69,6 +69,11 @@ const AdminLogin = ({ adminlogin, adminisAuthenticated }) => {
                     Login
                   </Button>
                 </Form.Group>
+                <Form.Text className='text-muted'>
+                  <span className='pull-right'>
+                    <Link to='/adminfpwd'>Forgot Password?</Link>
+                  </span>
+                </Form.Text>
               </Form>
             </Col>
           </Row>

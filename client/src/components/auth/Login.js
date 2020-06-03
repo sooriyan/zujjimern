@@ -71,6 +71,9 @@ const Login = ({ login, isAuthenticated }) => {
                 </Form.Group>
                 <Form.Text className='text-muted'>
                   Don't have an account. <Link to='/register'>Sign Up</Link>
+                  <span className='pull-right'>
+                    <Link to='/fpwd'>Forgot Password?</Link>
+                  </span>
                 </Form.Text>
               </Form>
             </Col>
