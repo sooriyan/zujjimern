@@ -10,7 +10,7 @@ const sendMail = (tomail, subject, html) => {
     },
   });
   var mailOptions = {
-    from: 'sooriyan10898@gmail.com',
+    from: 'Zujji',
     to: tomail,
     subject: subject,
     html: html,
