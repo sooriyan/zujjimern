@@ -17,6 +17,8 @@ import {
   UPDATE_PARTICULAR_REQUEST,
   GET_RECENT_PROJECTS,
   GET_RECENT_REQS,
+  GET_ALL_USERS,
+  DELETE_USER,
 } from './types';
 import { setHomeLoading } from './auth';
 import { setAlert } from './alert';
@@ -361,6 +363,40 @@ export const forgotpwdupdatepwd = (param, password) => async (dispatch) => {
     if (res) {
       dispatch(setAlert('Updated Password Successfully', 'success', 4000));
     }
+  } catch (error) {
+    const errors = error.response.data.errors;
+    console.log(errors);
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger', 4000)));
+    }
+  }
+};
+//Get all users
+export const deleteuser = (id) => async (dispatch) => {
+  try {
+    const allusers = await axios.delete(`/api/admin/${id}`);
+    console.log(id);
+    dispatch({
+      type: DELETE_USER,
+      payload: id,
+    });
+    dispatch(setAlert('Successfully deleted User', 'success', 4000));
+  } catch (error) {
+    console.log(error);
+    const errors = error.response.data.errors;
+    console.log(errors);
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger', 4000)));
+    }
+  }
+};
+export const getallusers = () => async (dispatch) => {
+  try {
+    const allusers = await axios.get('/api/admin/users');
+    dispatch({
+      type: GET_ALL_USERS,
+      payload: allusers.data,
+    });
   } catch (error) {
     const errors = error.response.data.errors;
     console.log(errors);

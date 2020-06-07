@@ -16,6 +16,8 @@ import {
   UPDATE_PARTICULAR_REQUEST,
   GET_RECENT_REQS,
   GET_RECENT_PROJECTS,
+  GET_ALL_USERS,
+  DELETE_USER,
 } from '../actions/types';
 const initialState = {
   admintoken: localStorage.getItem('admintoken'),
@@ -29,6 +31,7 @@ const initialState = {
   request: {},
   recentreqs: [],
   recentprojects: [],
+  allusers: [],
 };
 export default function (state = initialState, action) {
   const { type, payload } = action;
@@ -62,6 +65,16 @@ export default function (state = initialState, action) {
         ...state,
         admins: payload,
         adminloading: false,
+      };
+    case GET_ALL_USERS:
+      return {
+        ...state,
+        allusers: payload,
+      };
+    case DELETE_USER:
+      return {
+        ...state,
+        allusers: state.allusers.filter((user) => user._id !== payload),
       };
     case SET_PROJECT_OBJECT: {
       return {

@@ -19,6 +19,7 @@ import EditProject from '../admin/EditProject';
 import RequestMgmt from '../admin/RequestMgmt';
 import EditRequest from '../admin/EditRequest';
 import ProjectMgmt from '../admin/ProjectMgmt';
+import UserMgmt from '../admin/UserMgmt';
 import AdminLogin from '../adminauth/AdminLogin';
 import AdminRegister from '../adminauth/AdminRegister';
 import AdminDashboard from '../dashboard/AdminDashboard';
@@ -61,6 +62,7 @@ const Home = ({ theme: { light } }) => {
             component={ProjectMgmt}
           />
           <PrivateAdminRoute exact path='/addproject' component={AddProject} />
+          <PrivateAdminRoute exact path='/usermgmt' component={UserMgmt} />
           <Route exact path='/register' component={Register} />
           <Route exact path='/login' component={Login} />
           <Route exact path='/' component={MainComponent} />

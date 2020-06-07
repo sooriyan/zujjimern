@@ -48,6 +48,11 @@ const MainNavbar = ({
         </Link>
       </Nav.Link>
       <Nav.Link>
+        <Link to='/usermgmt'>
+          <i className='fa fa-user' /> Users
+        </Link>
+      </Nav.Link>
+      <Nav.Link>
         <Link to='/projectmgmt'>
           <i className='fa fa-video-camera' /> Project
         </Link>

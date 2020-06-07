@@ -24,7 +24,7 @@ router.get('/', adminauth, async (req, res) => {
 //@route    put api/admin/users
 //@desc     Get All Users
 //@access   Private
-router.get('/', adminauth, async (req, res) => {
+router.get('/users', adminauth, async (req, res) => {
   try {
     const allusers = await User.find().select('-password');
     return res.json(allusers);
