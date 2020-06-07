@@ -2,6 +2,7 @@ const express = require('express');
 const Admin = require('../../models/Admin');
 const Request = require('../../models/Request');
 const User = require('../../models/User');
+const Project = require('../../models/Project');
 const bcrypt = require('bcryptjs');
 const adminauth = require('../../middleware/adminauth');
 const { check, validationResult } = require('express-validator');
@@ -221,11 +222,24 @@ router.get('/recentreqs', async (req, res) => {
 //@route    DELETE api/admin/:id requests
 //@desc     Delete particular user and requests
 //@access   Private
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', adminauth, async (req, res) => {
   try {
     const users = await User.findByIdAndDelete({ _id: req.params.id });
     const reqdelete = await Request.deleteMany({ user: req.params.id });
     return res.json(reqdelete);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+//@route DELETE api/admin/project/:id
+//@desc Delete Particular Project
+//@access Private
+router.delete('/project/:id', adminauth, async (req, res) => {
+  try {
+    const project = await Project.findByIdAndDelete({ _id: req.params.id });
+    return res.json(project);
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server Error');

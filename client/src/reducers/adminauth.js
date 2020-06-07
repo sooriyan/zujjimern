@@ -18,6 +18,7 @@ import {
   GET_RECENT_PROJECTS,
   GET_ALL_USERS,
   DELETE_USER,
+  DELETE_PROJECT,
 } from '../actions/types';
 const initialState = {
   admintoken: localStorage.getItem('admintoken'),
@@ -75,6 +76,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         allusers: state.allusers.filter((user) => user._id !== payload),
+      };
+    case DELETE_PROJECT:
+      return {
+        ...state,
+        projects: state.projects.filter((project) => project._id !== payload),
       };
     case SET_PROJECT_OBJECT: {
       return {

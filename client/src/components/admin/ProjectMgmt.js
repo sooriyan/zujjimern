@@ -1,19 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getallprojects } from '../../actions/adminauth';
-import { Table, Container, Row, Col } from 'react-bootstrap';
+import { getallprojects, deleteproject } from '../../actions/adminauth';
+import { Table, Container, Row, Col, Button, Modal } from 'react-bootstrap';
 import Moment from 'react-moment';
 import Loader from '../layout/Loader';
 const ProjectMgmt = ({
   adminauth: { adminisLoading, projects },
   getallprojects,
+  deleteproject,
   light,
 }) => {
   useEffect(() => {
     getallprojects();
     console.log(projects);
   }, []);
+  const [show, setShow] = useState(false);
+  const [currentproject, setCurrentProject] = useState({});
+  const handleClose = () => {
+    setShow(false);
+  };
+  const onClick = (id, name) => {
+    setCurrentProject({ id, name });
+    setShow(true);
+  };
+  const handledelete = (id) => {
+    deleteproject(id);
+    setShow(false);
+  };
+
   return (
     <Container fluid>
       <br />
@@ -67,6 +82,13 @@ const ProjectMgmt = ({
                         title='Edit Project'
                       >
                         <i class='fa fa-pencil' aria-hidden='true'></i>
+                      </Link>{' '}
+                      <Link title='Delete Project'>
+                        <i
+                          class='fa fa-trash'
+                          onClick={() => onClick(project._id, project.name)}
+                          aria-hidden='true'
+                        ></i>
                       </Link>
                     </td>
                   </tr>
@@ -78,6 +100,25 @@ const ProjectMgmt = ({
           </Table>
         </Col>
       </Row>
+      <Modal size='md' show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Project</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className='text-center'>
+          Are you sure, Do you want to delete {currentproject.name}?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant='secondary' onClick={handleClose}>
+            No
+          </Button>
+          <Button
+            variant='primary'
+            onClick={() => handledelete(currentproject.id)}
+          >
+            Yes
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };
@@ -86,4 +127,6 @@ const mapStateToProps = (state) => ({
   light: state.theme.light,
 });
 
-export default connect(mapStateToProps, { getallprojects })(ProjectMgmt);
+export default connect(mapStateToProps, { getallprojects, deleteproject })(
+  ProjectMgmt
+);

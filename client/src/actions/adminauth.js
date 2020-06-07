@@ -19,6 +19,7 @@ import {
   GET_RECENT_REQS,
   GET_ALL_USERS,
   DELETE_USER,
+  DELETE_PROJECT,
 } from './types';
 import { setHomeLoading } from './auth';
 import { setAlert } from './alert';
@@ -364,6 +365,24 @@ export const forgotpwdupdatepwd = (param, password) => async (dispatch) => {
       dispatch(setAlert('Updated Password Successfully', 'success', 4000));
     }
   } catch (error) {
+    const errors = error.response.data.errors;
+    console.log(errors);
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger', 4000)));
+    }
+  }
+};
+export const deleteproject = (id) => async (dispatch) => {
+  try {
+    const allprojects = await axios.delete(`/api/admin/project/${id}`);
+    console.log(id);
+    dispatch({
+      type: DELETE_PROJECT,
+      payload: id,
+    });
+    dispatch(setAlert('Successfully deleted Project', 'success', 4000));
+  } catch (error) {
+    console.log(error);
     const errors = error.response.data.errors;
     console.log(errors);
     if (errors) {

@@ -30,8 +30,6 @@ const UserMgmt = ({
     setShow(false);
   };
   const handledelete = (id) => {
-    console.log('in');
-    console.log(id);
     deleteuser(id);
     setShow(false);
   };
