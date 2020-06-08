@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { changeTheme } from '../../actions/theme';
-import { Navbar, NavDropdown, Nav, Button } from 'react-bootstrap';
+import { Navbar, NavDropdown, Nav, Button, Image } from 'react-bootstrap';
 import { logout } from '../../actions/auth';
 import { adminlogout } from '../../actions/adminauth';
 const MainNavbar = ({
@@ -10,8 +10,8 @@ const MainNavbar = ({
   theme: { light },
   logout,
   adminlogout,
-  auth: { isAuthenticated, loading },
-  adminauth: { adminisAuthenticated, adminloading },
+  auth: { isAuthenticated, loading, user },
+  adminauth: { adminisAuthenticated, adminloading, admin },
 }) => {
   const changetheme = () => {
     changeTheme();
@@ -33,6 +33,21 @@ const MainNavbar = ({
           <i className='fa fa-sign-out' /> Logout
         </a>
       </Nav.Link>
+      <NavDropdown
+        title={
+          <Image src={`${process.env.PUBLIC_URL}userimg.png`} roundedCircle />
+        }
+        id='basic-nav-dropdown'
+      >
+        <NavDropdown.Item>Hi, {user && user.name}</NavDropdown.Item>
+        <NavDropdown.Item>
+          <Nav.Link>
+            <a href='#!' onClick={logout}>
+              <i className='fa fa-sign-out' /> Logout
+            </a>
+          </Nav.Link>
+        </NavDropdown.Item>
+      </NavDropdown>
     </>
   );
   const adminauthLinks = (
@@ -62,11 +77,25 @@ const MainNavbar = ({
           <i className='fa fa-users' /> Admin
         </Link>
       </Nav.Link>
-      <Nav.Link>
-        <a href='#!' onClick={adminlogout}>
-          <i className='fa fa-sign-out' /> Logout
-        </a>
-      </Nav.Link>
+      <NavDropdown
+        title={
+          <Image
+            src={`${process.env.PUBLIC_URL}userimg.png`}
+            style={{ width: '30px' }}
+            roundedCircle
+          />
+        }
+        id='basic-nav-dropdown'
+      >
+        <NavDropdown.Item>Hi, {admin && admin.name}</NavDropdown.Item>
+        <NavDropdown.Item>
+          <Nav.Link>
+            <a href='#!' onClick={adminlogout}>
+              <i className='fa fa-sign-out' /> Logout
+            </a>
+          </Nav.Link>
+        </NavDropdown.Item>
+      </NavDropdown>
     </>
   );
   const guestLinks = (
