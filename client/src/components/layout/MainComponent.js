@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Carousel } from 'react-bootstrap';
 import DashboardQuery from '../dashboard/DashboardQuery';
+import IframeComponent from '../dashboard/IframeComponent';
 const MainComponent = () => {
   return (
     <Fragment>
@@ -45,6 +46,8 @@ const MainComponent = () => {
       </Carousel>
       <br />
       <DashboardQuery />
+      <br />
+      <IframeComponent />
     </Fragment>
   );
 };
